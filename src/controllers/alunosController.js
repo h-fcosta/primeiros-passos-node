@@ -1,6 +1,8 @@
-import alunos from "../data/alunos.js";
+import * as alunosModel from "../models/alunosModel.js";
 
-export function listarAlunos(req, res) {
+export async function listarAlunos(req, res) {
+  const alunos = await alunosModel.listarTodos();
+
   res.json(alunos);
 }
 
@@ -18,18 +20,14 @@ export function buscarAluno(req, res) {
   res.json(aluno);
 }
 
-export function cadastrarAluno(req, res) {
-  const novoAluno = {
-    id: alunos.length + 1,
-    nome: req.body.nome,
-    turma: req.body.turma
-  };
+export async function cadastrarAluno(req, res) {
+  const { nome, turma } = req.body;
 
-  alunos.push(novoAluno);
+  const aluno = await alunosModel.criarAluno({ nome, turma });
 
   res.status(201).json({
     mensagem: "Aluno cadastrado com sucesso",
-    aluno: novoAluno
+    aluno
   });
 }
 
