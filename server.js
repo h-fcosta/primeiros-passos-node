@@ -3,6 +3,7 @@ import "dotenv/config";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./src/config/swagger.js";
 import alunosRoutes from "./src/routes/alunosRoutes.js";
+import prisma from "./src/config/prisma.js";
 
 const app = express();
 const port = 3000;
@@ -21,6 +22,17 @@ app.get("/", (req, res) => {
 
 app.use("/alunos", alunosRoutes);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
+try {
+  await prisma.$connect();
+
+  console.log("Banco de dados conectado!");
+  app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+  });
+} catch (error) {
+  console.error("Erro ao conectar banco ao banco: ", error.message);
+
+  await prisma.$disconnect();
+
+  process.exitCode = -1;
+}
