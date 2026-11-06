@@ -1,6 +1,6 @@
 import prisma from "../config/prisma.js";
 
-export function criar({ nome, turma }) {
+export function criarAluno({ nome, turma }) {
   return prisma.aluno.create({
     data: {
       nome,
@@ -17,8 +17,8 @@ export function listarTodos() {
   });
 }
 
-export function editar() {}
+export function listarAlunoPorId() {}
 
-export function listaAlunoId() {}
+export function editarAluno() {}
 
-export function excluir() {}
+export function excluirAluno() {}
